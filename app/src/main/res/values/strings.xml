@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="enter_part_number">Введите номер з/ч</string>
+    <string name="button_search">Поиск</string>
+</resources>
