@@ -39,6 +39,7 @@ public  class NetworkUtils {
     public static JSONObject getJSONFromNetwork(String partNumber) {
         JSONObject result = null;
         URL url = buildBrandURL(partNumber);
+        Log.i("Text",url.toString());
         try {
             result =new JSONLoadTask().execute(url).get();
         } catch (ExecutionException e) {
@@ -46,36 +47,40 @@ public  class NetworkUtils {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if (result != null) {
+            Log.i("Text","Привет");
+        }
         return result;
     }
 
-    public static class JSONLoadTask extends AsyncTask<URL, Void, JSONObject> {
+    private static class JSONLoadTask extends AsyncTask<URL, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(URL... urls) {
             JSONObject result = null;
             if (urls == null || urls.length == 0) {
                 return result;
             }
-            HttpURLConnection httpURLConnection = null;
+            HttpURLConnection urlConnection = null;
             try {
-                httpURLConnection = (HttpURLConnection) urls[0].openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
+                urlConnection = (HttpURLConnection) urls[0].openConnection();
+                InputStream inputStream = urlConnection.getInputStream();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                String line = bufferedReader.readLine();
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                StringBuilder builder = new StringBuilder();
+                String line = reader.readLine();
                 while (line != null) {
-                    stringBuilder.append(line);
-                    line = bufferedReader.readLine();
+                    builder.append(line);
+                    line = reader.readLine();
+
                 }
-                result = new JSONObject(bufferedReader.toString());
+                result = new JSONObject(builder.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             } finally {
-                if (httpURLConnection != null) {
-                    httpURLConnection.disconnect();
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
                 }
             }
             return result;
