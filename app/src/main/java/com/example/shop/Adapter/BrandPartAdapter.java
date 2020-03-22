@@ -17,6 +17,11 @@ import java.util.ArrayList;
 public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.BrandPartsViewHolder> {
     private ArrayList <BrandPart> brandParts;
 
+    public void setBrandParts(ArrayList<BrandPart> brandParts) {
+        this.brandParts = brandParts;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public BrandPartsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
