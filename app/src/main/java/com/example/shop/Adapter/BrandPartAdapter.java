@@ -15,7 +15,20 @@ import com.example.shop.R;
 import java.util.ArrayList;
 
 public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.BrandPartsViewHolder> {
-    private ArrayList <BrandPart> brandParts;
+    private ArrayList<BrandPart> brandParts;
+    private OnPartClickListener onPartClickListener;
+
+    public void setOnPartClickListener(OnPartClickListener onPartClickListener) {
+        this.onPartClickListener = onPartClickListener;
+    }
+
+    public interface OnPartClickListener {
+        void OnpartClick(int position);
+    }
+
+    public ArrayList<BrandPart> getBrandParts() {
+        return brandParts;
+    }
 
     public void setBrandParts(ArrayList<BrandPart> brandParts) {
         this.brandParts = brandParts;
@@ -25,7 +38,7 @@ public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.Bran
     @NonNull
     @Override
     public BrandPartsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_part_item, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_part_item, parent, false);
         return new BrandPartsViewHolder(view);
     }
 
@@ -52,6 +65,14 @@ public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.Bran
             textViewPartNumber = itemView.findViewById(R.id.textViewPartNumber);
             textViewBrand = itemView.findViewById(R.id.textViewBrand);
             textViewName = itemView.findViewById(R.id.textViewName);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                if (onPartClickListener != null) {
+                onPartClickListener.OnpartClick(getAdapterPosition());
+                }
+                }
+            });
         }
     }
 }

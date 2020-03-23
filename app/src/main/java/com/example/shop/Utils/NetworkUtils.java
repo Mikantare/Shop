@@ -20,14 +20,27 @@ import java.util.concurrent.ExecutionException;
 
 public  class NetworkUtils {
 
-    private static final String BASE_URL_SEARCH_BRAND = "http://portal.moskvorechie.ru/portal.api?l=%s&p=%s&act=brand_by_nr&nr=%s&oe&name";
+    private static final String BASE_BRABD_URL_SEARCH_BRAND = "http://portal.moskvorechie.ru/portal.api?l=%s&p=%s&act=brand_by_nr&nr=%s&oe&name&cs=utf8";
+    private static final String BASE_PART_URL_SEARCH_BRAND = "http://portal.moskvorechie.ru/portal.api?l=%s&p=%s&act=price_by_nr_firm&v=1&nr=%s&f=%s&cs=utf8";
     private static final String USER_NAME = "plotnikov";
     private static final String API_KEY = "U66xkswgBstTKNAWvmPFQNqqpJy2kPn1mwiiEBORqMVM8lSyg9CfphEOPpvs6pkE";
 
 
     public static URL buildBrandURL(String partNumber) {
         URL searchBrandURL = null;
-        Uri uri = Uri.parse(String.format(BASE_URL_SEARCH_BRAND, USER_NAME, API_KEY, partNumber));
+        Uri uri = Uri.parse(String.format(BASE_BRABD_URL_SEARCH_BRAND, USER_NAME, API_KEY, partNumber));
+        try {
+
+            searchBrandURL = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return searchBrandURL;
+    }
+
+    public static URL buildPartURL(String partNumber, String brand) {
+        URL searchBrandURL = null;
+        Uri uri = Uri.parse(String.format(BASE_PART_URL_SEARCH_BRAND, USER_NAME, API_KEY, partNumber,brand));
         try {
             searchBrandURL = new URL(uri.toString());
         } catch (MalformedURLException e) {
@@ -36,10 +49,9 @@ public  class NetworkUtils {
         return searchBrandURL;
     }
 
-    public static JSONObject getJSONFromNetwork(String partNumber) {
+    public static JSONObject getPartJSONFromNetwork(String partNumber, String brand) {
         JSONObject result = null;
-        URL url = buildBrandURL(partNumber);
-        Log.i("Text",url.toString());
+        URL url = buildPartURL(partNumber,brand);
         try {
             result =new JSONLoadTask().execute(url).get();
         } catch (ExecutionException e) {
@@ -48,7 +60,23 @@ public  class NetworkUtils {
             e.printStackTrace();
         }
         if (result != null) {
-            Log.i("Text","Привет");
+        }
+        return result;
+    }
+
+
+
+    public static JSONObject getBrandJSONFromNetwork(String partNumber) {
+        JSONObject result = null;
+        URL url = buildBrandURL(partNumber);
+        try {
+            result =new JSONLoadTask().execute(url).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (result != null) {
         }
         return result;
     }
