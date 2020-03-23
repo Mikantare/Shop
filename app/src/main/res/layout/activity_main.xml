@@ -43,9 +43,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewResultSearch"
+        android:id="@+id/recyclerViewResultBrandSearch"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewResultPartSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

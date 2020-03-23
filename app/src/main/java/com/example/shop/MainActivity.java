@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.shop.Adapter.BrandPartAdapter;
+import com.example.shop.Adapter.PartAdapter;
 import com.example.shop.Data.BrandPart;
+import com.example.shop.Data.Part;
 import com.example.shop.Utils.JSONUtils;
 import com.example.shop.Utils.NetworkUtils;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewResultSearch;
+    private RecyclerView recyclerViewResultPartSearch;
     private EditText editTextPartNumber;
     private Button buttonSearch;
     private BrandPartAdapter brandPartAdapter;
@@ -32,12 +36,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         editTextPartNumber = findViewById(R.id.editTextPartNumber);
         buttonSearch = findViewById(R.id.buttonSearch);
-        recyclerViewResultSearch = findViewById(R.id.recyclerViewResultSearch);
+        recyclerViewResultPartSearch = findViewById(R.id.recyclerViewResultPartSearch);
+        recyclerViewResultSearch = findViewById(R.id.recyclerViewResultBrandSearch);
         brandPartAdapter = new BrandPartAdapter();
         brandPartAdapter.setOnPartClickListener(new BrandPartAdapter.OnPartClickListener() {
             @Override
             public void OnpartClick(int position) {
-//                String partNumber = brandPartAdapter.getBrandParts().get(position);
+                recyclerViewResultSearch.setVisibility(View.INVISIBLE);
+                recyclerViewResultPartSearch.setVisibility(View.VISIBLE);
+                BrandPart brandPart = brandPartAdapter.getBrandParts().get(position);
+                PartAdapter partAdapter = new PartAdapter();
+                String brand = brandPart.getBrand();
+                String partNumber = brandPart.getPartNumber();
+                recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerViewResultPartSearch.setAdapter(partAdapter);
+                JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
+               ArrayList <Part> parts = JSONUtils.getPartFromJSON(jsonObject);
+               partAdapter.setParts(parts);
 
             }
         });
@@ -46,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void search(View view) {
+        recyclerViewResultSearch.setVisibility(View.VISIBLE);
+        recyclerViewResultPartSearch.setVisibility(View.INVISIBLE);
         recyclerViewResultSearch.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewResultSearch.setAdapter(brandPartAdapter);
         partNumber = editTextPartNumber.getText().toString().trim();

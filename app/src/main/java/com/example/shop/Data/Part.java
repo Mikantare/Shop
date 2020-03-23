@@ -11,7 +11,16 @@ public class Part {
     private String price;
     private String currency;
     private String partId;
+    private String sname;
     private String sflag;
+
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
 
     public String getPartNumber() {
         return partNumber;
@@ -93,7 +102,7 @@ public class Part {
         this.sflag = sflag;
     }
 
-    public Part(String partNumber, String brand, String partName, String stock, String deliveryDays, String minQuantity, String price, String currency, String partId, String sflag) {
+    public Part(String partNumber, String brand, String partName, String stock, String deliveryDays, String minQuantity, String price, String currency, String partId, String sname, String sflag) {
         this.partNumber = partNumber;
         this.brand = brand;
         this.partName = partName;
@@ -103,6 +112,7 @@ public class Part {
         this.price = price;
         this.currency = currency;
         this.partId = partId;
+        this.sname = sname;
         this.sflag = sflag;
 
 
