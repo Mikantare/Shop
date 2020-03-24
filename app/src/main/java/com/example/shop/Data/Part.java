@@ -1,7 +1,12 @@
 package com.example.shop.Data;
 
-public class Part {
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "parts")
+public class Part {
+    @PrimaryKey
+    private String partId;
     private String partNumber;
     private String brand;
     private String partName;
@@ -10,7 +15,6 @@ public class Part {
     private String minQuantity;
     private String price;
     private String currency;
-    private String partId;
     private String sname;
     private String sflag;
 

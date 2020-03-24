@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.shop.Adapter.BrandPartAdapter;
 import com.example.shop.Adapter.PartAdapter;
 import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.Part;
+import com.example.shop.Data.PartsDataBase;
 import com.example.shop.Utils.JSONUtils;
 import com.example.shop.Utils.NetworkUtils;
 
@@ -29,11 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonSearch;
     private BrandPartAdapter brandPartAdapter;
     private String partNumber;
+    private ArrayList <Part> parts;
+
+    private PartsDataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataBase = PartsDataBase.getInstance(this);
         editTextPartNumber = findViewById(R.id.editTextPartNumber);
         buttonSearch = findViewById(R.id.buttonSearch);
         recyclerViewResultPartSearch = findViewById(R.id.recyclerViewResultPartSearch);
@@ -51,13 +55,19 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 recyclerViewResultPartSearch.setAdapter(partAdapter);
                 JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
-               ArrayList <Part> parts = JSONUtils.getPartFromJSON(jsonObject);
-               partAdapter.setParts(parts);
+                parts = JSONUtils.getPartFromJSON(jsonObject);
+                partAdapter.setParts(parts);
 
             }
         });
 
 
+    }
+
+    private void getData () {
+        ArrayList <Part> partsFromDB = dataBase.partsDao().getAllPart();
+        parts.clear();
+        parts.addAll(partsFromDB);
     }
 
     public void search(View view) {
