@@ -20,6 +20,7 @@ import com.example.shop.Utils.NetworkUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewResultPartSearch.setAdapter(partAdapter);
                 JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
                 parts = JSONUtils.getPartFromJSON(jsonObject);
-                partAdapter.setParts(parts);
+                dataBase.partsDao().insertParts(parts);
+                partAdapter.setParts((ArrayList<Part>) dataBase.partsDao().getAllPart());
 
             }
         });
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData () {
-        ArrayList <Part> partsFromDB = dataBase.partsDao().getAllPart();
+        List<Part> partsFromDB = dataBase.partsDao().getAllPart();
         parts.clear();
         parts.addAll(partsFromDB);
     }

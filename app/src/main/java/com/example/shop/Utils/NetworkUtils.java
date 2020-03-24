@@ -28,7 +28,7 @@ public class NetworkUtils {
     //    При использовании данного параметра, в результатах данной процедуру будут также выводиться бренды на которые есть аналоги на нашем складе. "" для отключения
     private static final String API_ANALOG_ON = "&alt";
     //    При использовании данного параметра, из результатов скрываются все предложения со сторонних складов (позиции под заказ). Будет отображаться только наличие с локальных складов. "" для отключения
-    private static final String API_EXISTENS = "";
+    private static final String API_EXISTENS = "oe";
 
     public static URL buildBrandURL(String partNumber) {
         URL searchBrandURL = null;

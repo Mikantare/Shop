@@ -51,9 +51,9 @@ public class JSONUtils {
                 String stock = objectBrandPart.getString("stock");
                 String deliveryDays = objectBrandPart.getString("ddays");
                 String minQuantity = objectBrandPart.getString("minq");
-                String price = objectBrandPart.getString("price");
+                int price = objectBrandPart.getInt("price");
                 String currency = objectBrandPart.getString("currency");
-                String partId = objectBrandPart.getString("gid");
+                int partId = objectBrandPart.getInt("gid");
                 String sname = objectBrandPart.getString("sname");
                 String sflag = objectBrandPart.getString("sflag");
                 Log.i("FLAG",sflag);

@@ -5,15 +5,15 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "parts")
 public class Part {
-    @PrimaryKey
-    private String partId;
+    @PrimaryKey ()
+    private int partId;
     private String partNumber;
     private String brand;
     private String partName;
     private String stock;
     private String deliveryDays;
     private String minQuantity;
-    private String price;
+    private int price;
     private String currency;
     private String sname;
     private String sflag;
@@ -74,11 +74,11 @@ public class Part {
         this.minQuantity = minQuantity;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -90,11 +90,11 @@ public class Part {
         this.currency = currency;
     }
 
-    public String getPartId() {
+    public int getPartId() {
         return partId;
     }
 
-    public void setPartId(String partId) {
+    public void setPartId(int partId) {
         this.partId = partId;
     }
 
@@ -106,7 +106,7 @@ public class Part {
         this.sflag = sflag;
     }
 
-    public Part(String partNumber, String brand, String partName, String stock, String deliveryDays, String minQuantity, String price, String currency, String partId, String sname, String sflag) {
+    public Part(String partNumber, String brand, String partName, String stock, String deliveryDays, String minQuantity, int price, String currency, int partId, String sname, String sflag) {
         this.partNumber = partNumber;
         this.brand = brand;
         this.partName = partName;
