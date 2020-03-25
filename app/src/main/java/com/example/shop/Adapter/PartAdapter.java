@@ -34,7 +34,7 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         holder.textViewName.setText(part.getPartName());
         holder.textViewBrand.setText(part.getBrand());
         holder.textViewPartNumber.setText(part.getPartNumber());
-        holder.textViewPrice.setText(part.getPrice());
+        holder.textViewPrice.setText(part.getStringPrice());
     }
 
     @Override

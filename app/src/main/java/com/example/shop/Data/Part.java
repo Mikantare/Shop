@@ -78,6 +78,10 @@ public class Part {
         return price;
     }
 
+    public String getStringPrice() {
+        return Integer.toString(price);
+    }
+
     public void setPrice(int price) {
         this.price = price;
     }

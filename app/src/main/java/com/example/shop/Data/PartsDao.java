@@ -19,7 +19,7 @@ public interface PartsDao {
     Part getPartFromID (String partId);
 
     @Insert
-    void insertParts (ArrayList<Part> parts);
+    void insertParts (Part part);
 
 
 }

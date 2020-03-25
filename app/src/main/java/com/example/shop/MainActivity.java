@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonSearch;
     private BrandPartAdapter brandPartAdapter;
     private String partNumber;
-    private ArrayList <Part> parts;
+    private List <Part> parts;
 
     private PartsDataBase dataBase;
 
@@ -56,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 recyclerViewResultPartSearch.setAdapter(partAdapter);
                 JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
-                parts = JSONUtils.getPartFromJSON(jsonObject);
-                dataBase.partsDao().insertParts(parts);
-                partAdapter.setParts((ArrayList<Part>) dataBase.partsDao().getAllPart());
+                parts = (List<Part>) JSONUtils.getPartFromJSON(jsonObject);
+                for (Part part: parts) {
+                    dataBase.partsDao().insertParts(part);
+                }
+                partAdapter.setParts((ArrayList<Part>) parts);
 
             }
         });
