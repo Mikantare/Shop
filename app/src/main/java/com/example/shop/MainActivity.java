@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonSearch;
     private BrandPartAdapter brandPartAdapter;
     private String partNumber;
-    private List <Part> parts;
+    private ArrayList <Part> parts = new ArrayList<>();
 
     private PartsDataBase dataBase;
 
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dataBase = PartsDataBase.getInstance(this);
+        dataBase.partsDao().deleteAllParts();
         editTextPartNumber = findViewById(R.id.editTextPartNumber);
         buttonSearch = findViewById(R.id.buttonSearch);
         recyclerViewResultPartSearch = findViewById(R.id.recyclerViewResultPartSearch);
@@ -56,11 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 recyclerViewResultPartSearch.setAdapter(partAdapter);
                 JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
-                parts = (List<Part>) JSONUtils.getPartFromJSON(jsonObject);
-                for (Part part: parts) {
-                    dataBase.partsDao().insertParts(part);
-                }
-                partAdapter.setParts((ArrayList<Part>) parts);
+                dataBase.partsDao().insertParts(JSONUtils.getPartFromJSON(jsonObject));
+                getData();
+                partAdapter.setParts(parts);
 
             }
         });
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData () {
-        List<Part> partsFromDB = dataBase.partsDao().getAllPart();
+        ArrayList<Part> partsFromDB = (ArrayList<Part>) dataBase.partsDao().getAllPart();
         parts.clear();
         parts.addAll(partsFromDB);
     }

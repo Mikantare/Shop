@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JSONUtils {
     private static final String KEY_RESULT = "result";
@@ -37,7 +38,7 @@ public class JSONUtils {
     }
 
     public static ArrayList <Part> getPartFromJSON (JSONObject jsonObject) {
-        ArrayList <Part> result = new ArrayList<>();
+        ArrayList<Part> result = new ArrayList<>();
         if (jsonObject == null) {
             return result;
         }
@@ -56,9 +57,9 @@ public class JSONUtils {
                 int partId = objectBrandPart.getInt("gid");
                 String sname = objectBrandPart.getString("sname");
                 String sflag = objectBrandPart.getString("sflag");
-                Log.i("FLAG",sflag);
+                Log.i("Result",partName);
                 if (sname.equals("Владимир") || sname.equals("Центр")) {
-                    Part part = new Part(partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, partId, sname, sflag);
+                    Part part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency,  sname, sflag);
                     result.add(part);
                 }
             }

@@ -12,6 +12,7 @@ import com.example.shop.Data.Part;
 import com.example.shop.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolder> {
     private ArrayList <Part> parts;

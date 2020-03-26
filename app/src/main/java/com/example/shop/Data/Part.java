@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "parts")
 public class Part {
-    @PrimaryKey ()
+    @PrimaryKey(autoGenerate = false)
     private int partId;
     private String partNumber;
     private String brand;
@@ -110,7 +110,8 @@ public class Part {
         this.sflag = sflag;
     }
 
-    public Part(String partNumber, String brand, String partName, String stock, String deliveryDays, String minQuantity, int price, String currency, int partId, String sname, String sflag) {
+    public Part(int partId, String partNumber, String brand, String partName, String stock, String deliveryDays, String minQuantity, int price, String currency, String sname, String sflag) {
+        this.partId = partId;
         this.partNumber = partNumber;
         this.brand = brand;
         this.partName = partName;
@@ -119,10 +120,7 @@ public class Part {
         this.minQuantity = minQuantity;
         this.price = price;
         this.currency = currency;
-        this.partId = partId;
         this.sname = sname;
         this.sflag = sflag;
-
-
     }
 }
