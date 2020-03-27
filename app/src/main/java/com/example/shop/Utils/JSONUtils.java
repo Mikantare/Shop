@@ -59,6 +59,7 @@ public class JSONUtils {
                 String sflag = objectBrandPart.getString("sflag");
                 Log.i("Result",partName);
                 if (sname.equals("Владимир") || sname.equals("Центр")) {
+
                     Part part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency,  sname, sflag);
                     result.add(part);
                 }
