@@ -1,5 +1,6 @@
 package com.example.shop.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shop.Data.Part;
+import com.example.shop.MainActivity;
 import com.example.shop.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.shop.R.color.grenn;
 
 public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolder> {
     private ArrayList <Part> parts;
@@ -36,6 +40,11 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         holder.textViewBrand.setText(part.getBrand());
         holder.textViewPartNumber.setText(part.getPartNumber());
         holder.textViewPrice.setText(part.getStringPrice());
+        switch (part.getDeliveryDays()) {
+            case 0:
+                holder.textViewPrice.setBackgroundColor();
+                break;
+        }
     }
 
     @Override

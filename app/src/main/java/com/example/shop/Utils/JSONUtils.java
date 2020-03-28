@@ -16,19 +16,19 @@ import java.util.List;
 public class JSONUtils {
     private static final String KEY_RESULT = "result";
 
-    public static ArrayList <BrandPart> getBrandFromJSON (JSONObject jsonObject) {
-        ArrayList <BrandPart> result = new ArrayList<>();
+    public static ArrayList<BrandPart> getBrandFromJSON(JSONObject jsonObject) {
+        ArrayList<BrandPart> result = new ArrayList<>();
         if (jsonObject == null) {
             return result;
         }
         try {
             JSONArray jsonArray = jsonObject.getJSONArray(KEY_RESULT);
             for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject objectBrandPart = jsonArray.getJSONObject(i);
+                JSONObject objectBrandPart = jsonArray.getJSONObject(i);
                 String partNumber = objectBrandPart.getString("nr");
                 String brand = objectBrandPart.getString("brand");
                 String partName = objectBrandPart.getString("name");
-                BrandPart brandPart = new BrandPart(partNumber,brand,partName);
+                BrandPart brandPart = new BrandPart(partNumber, brand, partName);
                 result.add(brandPart);
             }
         } catch (JSONException e) {
@@ -37,7 +37,7 @@ public class JSONUtils {
         return result;
     }
 
-    public static ArrayList <Part> getPartFromJSON (JSONObject jsonObject) {
+    public static ArrayList<Part> getPartFromJSON(JSONObject jsonObject) {
         ArrayList<Part> result = new ArrayList<>();
         if (jsonObject == null) {
             return result;
@@ -57,13 +57,20 @@ public class JSONUtils {
                 int partId = objectBrandPart.getInt("gid");
                 String sname = objectBrandPart.getString("sname");
                 String sflag = objectBrandPart.getString("sflag");
-                Log.i("Result",partName);
+                Log.i("Result", partName);
                 if (sname.equals("Владимир") || sname.equals("Центр")) {
 
-                    Part part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency,  sname, sflag);
-                    result.add(part);
+                            Part part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
+                            result.add(part);
+
                 }
             }
+            for (int i = 0; i < result.size() - 1; i++) {
+                if (result.get(i).getPartNumber() == result.get(i + 1).getPartNumber()) {
+                    result.remove(i);
+                }
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
