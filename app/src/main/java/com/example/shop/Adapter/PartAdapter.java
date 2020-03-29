@@ -1,5 +1,7 @@
 package com.example.shop.Adapter;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.shop.R.color.grenn;
+import static com.example.shop.R.color.material_blue_grey_800;
+import static com.example.shop.R.color.orange;
 
 public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolder> {
     private ArrayList <Part> parts;
@@ -33,6 +37,7 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         return new PartViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PartViewHolder holder, int position) {
         Part part = parts.get(position);
@@ -40,10 +45,15 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         holder.textViewBrand.setText(part.getBrand());
         holder.textViewPartNumber.setText(part.getPartNumber());
         holder.textViewPrice.setText(part.getStringPrice());
-        switch (part.getDeliveryDays()) {
+        switch (part.getDeliveryDaysToInt()) {
             case 0:
-                holder.textViewPrice.setBackgroundColor();
+                holder.textViewPrice.setBackgroundColor(holder.itemView.getResources().getColor(grenn));
                 break;
+            case 1:
+                holder.textViewPrice.setBackgroundColor(holder.itemView.getResources().getColor(orange));
+                break;
+                default:
+                    holder.textViewPrice.setBackgroundColor(holder.itemView.getResources().getColor(android.R.color.holo_red_light));
         }
     }
 

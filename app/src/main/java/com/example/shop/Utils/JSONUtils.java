@@ -59,9 +59,26 @@ public class JSONUtils {
                 String sflag = objectBrandPart.getString("sflag");
                 Log.i("Result", partName);
                 if (sname.equals("Владимир") || sname.equals("Центр")) {
-
+                    switch (sname) {
+                        case "Владимир":
                             Part part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
                             result.add(part);
+                            break;
+                        default:
+                            for (int j = 0; j < result.size(); j++) {
+                                try {
+                                    if (!partNumber.equals(result.get(j).getPartNumber())) {
+                                        Log.i("Result", "" + j);
+                                        part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
+                                        result.add(part);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            break;
+                    }
+
 
                 }
             }
