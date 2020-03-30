@@ -16,6 +16,7 @@ import java.util.List;
 public class JSONUtils {
     private static final String KEY_RESULT = "result";
 
+
     public static ArrayList<BrandPart> getBrandFromJSON(JSONObject jsonObject) {
         ArrayList<BrandPart> result = new ArrayList<>();
         if (jsonObject == null) {
@@ -61,33 +62,31 @@ public class JSONUtils {
                 if (sname.equals("Владимир") || sname.equals("Центр")) {
                     switch (sname) {
                         case "Владимир":
-                            Part part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
-                            result.add(part);
+                            Log.i("ResultVL", partName);
+                           Part part= new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
+                           result.add(part);
                             break;
                         default:
+                            part= new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
+                            result.add(part);
                             for (int j = 0; j < result.size(); j++) {
                                 try {
-                                    if (!partNumber.equals(result.get(j).getPartNumber())) {
+                                    if (partNumber.equals(result.get(j).getPartNumber())) {
+                                        Log.i("ResultCe", partName);
                                         Log.i("Result", "" + j);
-                                        part = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
-                                        result.add(part);
+                                        result.remove(j);
+//                                       Part partCentr = new Part(partId, partNumber, brand, partName, stock, deliveryDays, minQuantity, price, currency, sname, sflag);
+//                                       result.add(partCentr);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
+
                             break;
                     }
-
-
                 }
             }
-            for (int i = 0; i < result.size() - 1; i++) {
-                if (result.get(i).getPartNumber() == result.get(i + 1).getPartNumber()) {
-                    result.remove(i);
-                }
-            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

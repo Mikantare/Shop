@@ -1,9 +1,13 @@
 package com.example.shop;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +16,7 @@ import android.widget.EditText;
 import com.example.shop.Adapter.BrandPartAdapter;
 import com.example.shop.Adapter.PartAdapter;
 import com.example.shop.Data.BrandPart;
+import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
 import com.example.shop.Data.PartsDataBase;
 import com.example.shop.Utils.JSONUtils;
@@ -21,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,16 +36,17 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonSearch;
     private BrandPartAdapter brandPartAdapter;
     private String partNumber;
-    private ArrayList <Part> parts = new ArrayList<>();
+    private ArrayList<Part> parts = new ArrayList<>();
 
-    private PartsDataBase dataBase;
+    private MainViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dataBase = PartsDataBase.getInstance(this);
         editTextPartNumber = findViewById(R.id.editTextPartNumber);
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         buttonSearch = findViewById(R.id.buttonSearch);
         recyclerViewResultPartSearch = findViewById(R.id.recyclerViewResultPartSearch);
         recyclerViewResultSearch = findViewById(R.id.recyclerViewResultBrandSearch);
@@ -47,25 +54,28 @@ public class MainActivity extends AppCompatActivity {
         brandPartAdapter.setOnPartClickListener(new BrandPartAdapter.OnPartClickListener() {
             @Override
             public void OnpartClick(int position) {
-                dataBase.partsDao().deleteAllParts();
                 recyclerViewResultSearch.setVisibility(View.INVISIBLE);
                 recyclerViewResultPartSearch.setVisibility(View.VISIBLE);
                 BrandPart brandPart = brandPartAdapter.getBrandParts().get(position);
-                PartAdapter partAdapter = new PartAdapter();
+                final PartAdapter partAdapter = new PartAdapter();
                 String brand = brandPart.getBrand();
                 String partNumber = brandPart.getPartNumber();
                 recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 recyclerViewResultPartSearch.setAdapter(partAdapter);
                 JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
-                dataBase.partsDao().insertParts(JSONUtils.getPartFromJSON(jsonObject));
-                partAdapter.setParts((ArrayList<Part>) dataBase.partsDao().getAllPart());
-
+                viewModel.insertPart((List<Part>) JSONUtils.getPartFromJSON(jsonObject));
+                LiveData<List<Part>> partFromDb = viewModel.getParts();
+                partFromDb.observe(MainActivity.this, new Observer<List<Part>>() {
+                    @Override
+                    public void onChanged(List<Part> parts) {
+                        partAdapter.setParts((ArrayList<Part>) parts);
+                    }
+                });
             }
         });
 
 
     }
-
 
 
     public void search(View view) {
@@ -75,11 +85,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewResultSearch.setAdapter(brandPartAdapter);
         partNumber = editTextPartNumber.getText().toString().trim();
         JSONObject jsonObject = NetworkUtils.getBrandJSONFromNetwork(partNumber);
-        ArrayList <BrandPart> brandParts = JSONUtils.getBrandFromJSON(jsonObject);
+        ArrayList<BrandPart> brandParts = JSONUtils.getBrandFromJSON(jsonObject);
         brandPartAdapter.setBrandParts(brandParts);
     }
-
-
 
 
 }
