@@ -2,6 +2,7 @@ package com.example.shop.Data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -33,6 +34,9 @@ public interface PartsDao {
 
     @Insert
     void insertPartToBasket(PartsToBasket partsToBasket);
+
+    @Delete
+    void deletePartToBasket (PartsToBasket partsToBasket);
 
 
 }

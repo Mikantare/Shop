@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        Toast.makeText(MainActivity.this, "" + direction, Toast.LENGTH_SHORT).show();
+                        
                     }
                 });
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);

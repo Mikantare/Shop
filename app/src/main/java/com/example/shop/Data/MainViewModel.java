@@ -13,6 +13,7 @@ import java.util.List;
 public class MainViewModel extends AndroidViewModel {
     private static PartsDataBase dataBase;
     private LiveData<List<Part>> parts;
+    private LiveData<List<PartsToBasket>> partsToBasket;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -20,8 +21,40 @@ public class MainViewModel extends AndroidViewModel {
         parts = dataBase.partsDao().getAllPart();
     }
 
+    public LiveData<List<PartsToBasket>> getPartsToBasket() {
+        return partsToBasket;
+    }
+
     public LiveData<List<Part>> getParts() {
         return parts;
+    }
+
+    public void insertPartToBasket (PartsToBasket partsToBasket) {
+        new InsertTaskPartToBasket().execute(partsToBasket);
+    }
+
+    public static class  InsertTaskPartToBasket extends AsyncTask <PartsToBasket, Void, Void> {
+        @Override
+        protected Void doInBackground(PartsToBasket... partsToBaskets) {
+            if (partsToBaskets != null || partsToBaskets.length > 0) {
+                dataBase.partsDao().insertPartToBasket(partsToBaskets[0]);
+            }
+            return null;
+        }
+    }
+
+    public void deletePartToBasket (PartsToBasket partsToBasket) {
+        new DeleteTaskPartToBasket().execute(partsToBasket);
+    }
+
+    public static class  DeleteTaskPartToBasket extends AsyncTask <PartsToBasket, Void, Void> {
+        @Override
+        protected Void doInBackground(PartsToBasket... partsToBaskets) {
+            if (partsToBaskets != null || partsToBaskets.length > 0) {
+                dataBase.partsDao().deletePartToBasket(partsToBaskets[0]);
+            }
+            return null;
+        }
     }
 
     public void insertPart(List<Part> partFromJSON) {
