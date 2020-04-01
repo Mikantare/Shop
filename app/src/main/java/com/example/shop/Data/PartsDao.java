@@ -22,5 +22,17 @@ public interface PartsDao {
     @Insert
     void insertParts(List<Part> parts);
 
+    @Query("SELECT * FROM part_to_basket")
+    LiveData<List<PartsToBasket>> getAllPartToBasket();
+
+    @Query("DELETE FROM part_to_basket")
+    void deleteAllPartToBasket();
+
+    @Query("SELECT * FROM part_to_basket WHERE partId ==:partId")
+    Part getPartToBasketFromID(String partId);
+
+    @Insert
+    void insertPartToBasket(PartsToBasket partsToBasket);
+
 
 }

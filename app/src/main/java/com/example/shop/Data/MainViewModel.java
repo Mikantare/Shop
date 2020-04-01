@@ -25,10 +25,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void insertPart(List<Part> partFromJSON) {
-        new InsertTask().execute((ArrayList<Part>) partFromJSON);
-
-    }
-
+            new InsertTask().execute((ArrayList<Part>) partFromJSON);
+           }
 
 
     public static class InsertTask extends AsyncTask<ArrayList<Part>, Void, Void> {
@@ -37,6 +35,18 @@ public class MainViewModel extends AndroidViewModel {
             if (parts != null || parts.length > 0) {
                 dataBase.partsDao().insertParts((List<Part>) parts[0]);
             }
+            return null;
+        }
+    }
+
+    public void deleteAllParts () {
+        new DeleteAllParts().execute();
+    }
+
+    public static class DeleteAllParts extends AsyncTask <Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            dataBase.partsDao().deleteAllParts();
             return null;
         }
     }

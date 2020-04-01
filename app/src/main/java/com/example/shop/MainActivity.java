@@ -1,9 +1,11 @@
 package com.example.shop;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.shop.Adapter.BrandPartAdapter;
 import com.example.shop.Adapter.PartAdapter;
@@ -60,21 +63,38 @@ public class MainActivity extends AppCompatActivity {
                 final PartAdapter partAdapter = new PartAdapter();
                 String brand = brandPart.getBrand();
                 String partNumber = brandPart.getPartNumber();
-                recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                recyclerViewResultPartSearch.setAdapter(partAdapter);
-                JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
-                viewModel.insertPart((List<Part>) JSONUtils.getPartFromJSON(jsonObject));
+                downLoadPartsList(partNumber, brand);
                 LiveData<List<Part>> partFromDb = viewModel.getParts();
                 partFromDb.observe(MainActivity.this, new Observer<List<Part>>() {
                     @Override
                     public void onChanged(List<Part> parts) {
+                        recyclerViewResultPartSearch.setAdapter(partAdapter);
                         partAdapter.setParts((ArrayList<Part>) parts);
                     }
                 });
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        Toast.makeText(MainActivity.this, "" + direction, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);
             }
         });
+    }
 
-
+    public void downLoadPartsList(String partNumber, String brand) {
+        recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
+        if (jsonObject != null) {
+            viewModel.deleteAllParts();
+            viewModel.insertPart((List<Part>) JSONUtils.getPartFromJSON(jsonObject));
+        }
     }
 
 

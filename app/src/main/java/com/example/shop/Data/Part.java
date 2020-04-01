@@ -61,7 +61,7 @@ public class Part {
     public String getDeliveryDays() {
         return (String) deliveryDays;
     }
-    public int getDeliveryDaysToInt() {
+        public int getDeliveryDaysToInt() {
         return Integer.parseInt(deliveryDays) ;
     }
 
