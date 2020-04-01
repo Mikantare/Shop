@@ -2,8 +2,10 @@ package com.example.shop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,7 @@ import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
 import com.example.shop.Data.PartsDataBase;
+import com.example.shop.Data.PartsToBasket;
 import com.example.shop.Utils.JSONUtils;
 import com.example.shop.Utils.NetworkUtils;
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Part> parts = new ArrayList<>();
 
     private MainViewModel viewModel;
+    private DialogFragment dialogFragment;
 
 
     @Override
@@ -80,13 +84,16 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        
+                        int position = viewHolder.getAdapterPosition();
+                        Part partsToBasket = partAdapter.getParts().get(position);
+                        viewModel.insertPartToBasket(new  PartsToBasket(partsToBasket));
                     }
                 });
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);
             }
         });
     }
+
 
     public void downLoadPartsList(String partNumber, String brand) {
         recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

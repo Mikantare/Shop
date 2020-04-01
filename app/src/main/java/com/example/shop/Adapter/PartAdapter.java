@@ -25,6 +25,10 @@ import static com.example.shop.R.color.orange;
 public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolder> {
     private ArrayList <Part> parts;
 
+    public ArrayList<Part> getParts() {
+        return parts;
+    }
+
     public void setParts(ArrayList<Part> parts) {
         this.parts = parts;
         notifyDataSetChanged();

@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Part.class}, version = 2, exportSchema = false)
+@Database(entities = {Part.class,PartsToBasket.class}, version = 3, exportSchema = false)
 public abstract class PartsDataBase extends RoomDatabase {
     private static PartsDataBase dataBase;
     private static final String DB_NAME = "part.db";
@@ -17,6 +17,7 @@ public abstract class PartsDataBase extends RoomDatabase {
         synchronized (LOCK) {
             if (dataBase == null) {
                 dataBase = Room.databaseBuilder(context, PartsDataBase.class, DB_NAME)
+                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
