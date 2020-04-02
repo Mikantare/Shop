@@ -2,11 +2,14 @@ package com.example.shop.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +28,8 @@ import static com.example.shop.R.color.orange;
 public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolder> {
     private ArrayList <Part> parts;
 
+
+
     public ArrayList<Part> getParts() {
         return parts;
     }
@@ -38,7 +43,10 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
     @Override
     public PartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.part_item,parent,false);
-        return new PartViewHolder(view);
+        PartViewHolder viewHolder = new PartViewHolder(view);
+        return viewHolder;
+
+
     }
 
     @SuppressLint("ResourceAsColor")
@@ -71,6 +79,7 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         private TextView textViewBrand;
         private TextView textViewPartNumber;
         private TextView textViewPrice;
+
 
         public PartViewHolder(@NonNull View itemView) {
             super(itemView);

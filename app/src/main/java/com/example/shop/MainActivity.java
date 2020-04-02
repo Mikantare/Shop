@@ -2,6 +2,8 @@ package com.example.shop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.shop.Adapter.BrandPartAdapter;
+import com.example.shop.Adapter.DialogToBasket;
 import com.example.shop.Adapter.PartAdapter;
 import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
@@ -43,10 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private BrandPartAdapter brandPartAdapter;
     private String partNumber;
     private ArrayList<Part> parts = new ArrayList<>();
+    private DialogToBasket dialog;
 
     private MainViewModel viewModel;
-    private DialogFragment dialogFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
                         Part partsToBasket = partAdapter.getParts().get(position);
-                        viewModel.insertPartToBasket(new  PartsToBasket(partsToBasket));
+//                        viewModel.insertPartToBasket(new  PartsToBasket(partsToBasket));
+                       dialog = new DialogToBasket();
+                       dialog.getShowsDialog();
                     }
                 });
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);
