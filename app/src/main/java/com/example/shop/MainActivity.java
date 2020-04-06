@@ -22,6 +22,7 @@ import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
 import com.example.shop.Data.PartsDataBase;
+import com.example.shop.Data.PartsToBasket;
 import com.example.shop.Utils.JSONUtils;
 import com.example.shop.Utils.NetworkUtils;
 
@@ -80,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        
+//                         Part partToBasket = partAdapter.getParts().get(viewHolder.getAdapterPosition());
+//                        Toast.makeText(MainActivity.this, "" + partToBasket.getPartNumber(), Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);

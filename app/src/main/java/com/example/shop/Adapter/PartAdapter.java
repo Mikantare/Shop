@@ -30,6 +30,10 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         notifyDataSetChanged();
     }
 
+    public ArrayList<Part> getParts() {
+        return parts;
+    }
+
     @NonNull
     @Override
     public PartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -19,6 +19,7 @@ public class MainViewModel extends AndroidViewModel {
         super(application);
         dataBase = PartsDataBase.getInstance(getApplication());
         parts = dataBase.partsDao().getAllPart();
+        partsToBasket = dataBase.partsDao().getAllPartToBasket();
     }
 
     public LiveData<List<PartsToBasket>> getPartsToBasket() {
