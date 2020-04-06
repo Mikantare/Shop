@@ -11,29 +11,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 
 
 import com.example.shop.R;
 
-public class DialogToBasket extends DialogFragment {
-    @NonNull
+public class DialogToBasket extends AppCompatDialogFragment {
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.title_add_to_basket)
-                .setPositiveButton(R.string.button_add_to_basket, new DialogInterface.OnClickListener() {
+        builder.setTitle("Важное сообщение")
+                .setMessage("Сколько добавить")
+                .setPositiveButton("Хорошо", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "" + which, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "" + which, Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
                     }
                 });
-        return super.onCreateDialog(savedInstanceState);
+        return builder.create();
     }
 }

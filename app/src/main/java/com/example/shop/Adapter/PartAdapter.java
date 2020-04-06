@@ -39,9 +39,7 @@ public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolde
         notifyDataSetChanged();
     }
 
-    public ArrayList<Part> getParts() {
-        return parts;
-    }
+
 
     @NonNull
     @Override

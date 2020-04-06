@@ -2,6 +2,7 @@ package com.example.shop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.shop.Adapter.BrandPartAdapter;
+import com.example.shop.Adapter.DialogToBasket;
 import com.example.shop.Adapter.PartAdapter;
 import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        FragmentManager manager = getSupportFragmentManager();
+                        DialogToBasket dialogToBasket = new DialogToBasket();
+                        dialogToBasket.show(manager,"myDialog");
                         
                     }
                 });
