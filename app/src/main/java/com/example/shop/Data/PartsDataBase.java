@@ -17,6 +17,7 @@ public abstract class PartsDataBase extends RoomDatabase {
         synchronized (LOCK) {
             if (dataBase == null) {
                 dataBase = Room.databaseBuilder(context, PartsDataBase.class, DB_NAME)
+                        .fallbackToDestructiveMigration()
                         .build();
             }
         }
