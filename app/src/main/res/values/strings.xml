@@ -7,4 +7,5 @@
     <string name="quantity_to_basket">кол-во</string>
     <string name="comment">Комментарий</string>
     <string name="button_add_to_basket">В корзину</string>
+    <string name="title_quantity">Укажите кол-во</string>
 </resources>

@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel viewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         FragmentManager manager = getSupportFragmentManager();
                         DialogToBasket dialogToBasket = new DialogToBasket();
                         dialogToBasket.show(manager,"myDialog");
-                        
+
                     }
                 });
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);
