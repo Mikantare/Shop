@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DialogToBasket.DialogToBasketListener{
 
     private RecyclerView recyclerViewResultSearch;
     private RecyclerView recyclerViewResultPartSearch;
@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Part> parts = new ArrayList<>();
 
     private MainViewModel viewModel;
+
+    @Override
+    public void onFinishEditDialog(String quantity) {
+        Toast.makeText(this, "" + quantity, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);
             }
         });
+
+
     }
 
     public void downLoadPartsList(String partNumber, String brand) {

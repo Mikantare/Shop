@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,17 +27,24 @@ import java.util.zip.Inflater;
 public class DialogToBasket extends DialogFragment implements TextView.OnEditorActionListener {
 
     private EditText editTextQuantityToBasket;
+    private Button buttonToBasket, buttonCancel;
 
     public DialogToBasket() {
     }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (EditorInfo.IME_ACTION_DONE == actionId){
+            DialogToBasketListener listener = (DialogToBasketListener) getActivity();
+            listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString());
+            this.dismiss();
+            return true;
+        }
         return false;
     }
 
     public interface DialogToBasketListener {
-        void onFinishEditDialog (int quantity);
+        void onFinishEditDialog (String quantity);
     }
 
     @Nullable
@@ -44,7 +52,16 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_to_basket, container);
         editTextQuantityToBasket = (EditText) view.findViewById(R.id.editTextQuantityToBasket);
+        buttonToBasket = (Button) view.findViewById(R.id.buttonToBasket);
+        buttonCancel = (Button) view.findViewById(R.id.buttonCancel);
         getDialog().setTitle(R.string.title_quantity);
+
+        buttonToBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         return view;
     }
