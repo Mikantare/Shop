@@ -26,6 +26,7 @@ import static com.example.shop.R.color.material_blue_grey_800;
 import static com.example.shop.R.color.orange;
 
 public class PartAdapter extends RecyclerView.Adapter <PartAdapter.PartViewHolder> {
+
     private ArrayList <Part> parts;
 
 

@@ -59,10 +59,21 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
         buttonToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                DialogToBasketListener listener = (DialogToBasketListener) getActivity();
+                listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString());
+                dismiss();
+            }
+        });
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
             }
         });
 
         return view;
+
     }
+
+
 }

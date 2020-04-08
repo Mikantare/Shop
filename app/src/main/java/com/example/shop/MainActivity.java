@@ -41,13 +41,14 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private Button buttonSearch;
     private BrandPartAdapter brandPartAdapter;
     private String partNumber;
-    private ArrayList<Part> parts = new ArrayList<>();
-
     private MainViewModel viewModel;
+    private Part partToBasket;
+
 
     @Override
     public void onFinishEditDialog(String quantity) {
         Toast.makeText(this, "" + quantity, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
                 String brand = brandPart.getBrand();
                 String partNumber = brandPart.getPartNumber();
                 downLoadPartsList(partNumber, brand);
-                LiveData<List<Part>> partFromDb = viewModel.getParts();
+                final LiveData<List<Part>> partFromDb = viewModel.getParts();
                 partFromDb.observe(MainActivity.this, new Observer<List<Part>>() {
                     @Override
                     public void onChanged(List<Part> parts) {
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
                         FragmentManager manager = getSupportFragmentManager();
                         DialogToBasket dialogToBasket = new DialogToBasket();
                         dialogToBasket.show(manager,"myDialog");
-
+                        partToBasket = partAdapter.getParts().get(viewHolder.getAdapterPosition());
                     }
                 });
                 itemTouchHelper.attachToRecyclerView(recyclerViewResultPartSearch);
