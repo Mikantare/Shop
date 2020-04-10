@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +22,7 @@ import com.example.shop.Adapter.PartAdapter;
 import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
-import com.example.shop.Data.PartsDataBase;
+import com.example.shop.Data.PartsToBasket;
 import com.example.shop.Utils.JSONUtils;
 import com.example.shop.Utils.NetworkUtils;
 
@@ -31,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class MainActivity extends AppCompatActivity implements DialogToBasket.DialogToBasketListener{
 
@@ -45,9 +43,12 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private Part partToBasket;
 
 
+
+
     @Override
     public void onFinishEditDialog(String quantity) {
-        Toast.makeText(this, "" + quantity, Toast.LENGTH_SHORT).show();
+        viewModel.insertPartToBasket(new PartsToBasket(partToBasket,Integer.parseInt(quantity)));
+        Toast.makeText(this, "" + quantity + "Номер" + partToBasket.getPartId(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -57,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
         setContentView(R.layout.activity_main);
         editTextPartNumber = findViewById(R.id.editTextPartNumber);
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        buttonSearch = findViewById(R.id.buttonSearch);
+        buttonSearch = findViewById(R.id.buttonOrder);
         recyclerViewResultPartSearch = findViewById(R.id.recyclerViewResultPartSearch);
-        recyclerViewResultSearch = findViewById(R.id.recyclerViewResultBrandSearch);
+        recyclerViewResultSearch = findViewById(R.id.recyclerViewToBasket);
         brandPartAdapter = new BrandPartAdapter();
         brandPartAdapter.setOnPartClickListener(new BrandPartAdapter.OnPartClickListener() {
             @Override

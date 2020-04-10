@@ -15,7 +15,7 @@ public class PartsToBasket extends Part {
     }
 
     @Ignore
-    public PartsToBasket(PartsToBasket part, int quantity) {
+    public PartsToBasket(Part part, int quantity) {
         super(part.getPartId(), part.getPartNumber(),part.getBrand(),part.getPartName(),part.getStock(),part.getDeliveryDays(),part.getMinQuantity(), part.getPrice(),part.getCurrency(),part.getSname(),part.getSflag());
         this.quantity = quantity;
     }
