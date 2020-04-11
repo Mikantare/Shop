@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.shop.Adapter.BrandPartAdapter;
 import com.example.shop.Adapter.DialogToBasket;
 import com.example.shop.Adapter.PartAdapter;
+import com.example.shop.Adapter.PartsToBasketAdapter;
 import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
@@ -41,14 +43,21 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private String partNumber;
     private MainViewModel viewModel;
     private Part partToBasket;
-
-
-
+    private int coincidence = 2;
 
     @Override
     public void onFinishEditDialog(String quantity) {
-        viewModel.insertPartToBasket(new PartsToBasket(partToBasket,Integer.parseInt(quantity)));
-        Toast.makeText(this, "" + quantity + "Номер" + partToBasket.getPartId(), Toast.LENGTH_SHORT).show();
+        checkOnCoincidence(partToBasket.getPartId());
+        switch (coincidence) {
+            case 1:
+                viewModel.insertPartToBasket(new PartsToBasket(partToBasket,Integer.parseInt(quantity)));
+                break;
+            case 0:
+                Toast.makeText(this, R.string.warning_item_to_basket, Toast.LENGTH_SHORT).show();
+        }
+        Intent intent = new Intent(this,BasketActivity.class);
+        startActivity(intent);
+
 
     }
 
@@ -122,5 +131,21 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
         brandPartAdapter.setBrandParts(brandParts);
     }
 
+
+    public void checkOnCoincidence (final int id) {
+        final LiveData <List<PartsToBasket>> partsBasketFromDB = viewModel.getPartsToBasket();
+        partsBasketFromDB.observe(this, new Observer<List<PartsToBasket>>() {
+            @Override
+            public void onChanged(List<PartsToBasket> partsToBaskets) {
+                for (PartsToBasket parts: partsToBaskets) {
+                    if (id == parts.getPartId() || parts.getPartId() != 0){
+                        coincidence = 0;
+                    } else {
+                        coincidence = 1;
+                    }
+                }
+            }
+        });
+    }
 
 }

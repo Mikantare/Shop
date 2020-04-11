@@ -86,4 +86,15 @@ public class MainViewModel extends AndroidViewModel {
             return null;
         }
     }
+    public void deleteAllPartsToBasket () {
+        new DeleteAllPartsToBasket().execute();
+    }
+
+    public static class DeleteAllPartsToBasket extends AsyncTask <Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            dataBase.partsDao().deleteAllPartToBasket();
+            return null;
+        }
+    }
 }

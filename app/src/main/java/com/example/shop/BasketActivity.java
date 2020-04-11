@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Adapter;
 
 import com.example.shop.Adapter.PartsToBasketAdapter;
@@ -25,16 +29,24 @@ public class BasketActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
+        Intent intent = getIntent();
         recyclerViewToBasket = findViewById(R.id.recyclerViewToBasket);
+        recyclerViewToBasket.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         final PartsToBasketAdapter adapter = new PartsToBasketAdapter();
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         final LiveData<List<PartsToBasket>> partsToBasket = viewModel.getPartsToBasket();
-        partsToBasket.observe(BasketActivity.this, new Observer<List<PartsToBasket>>() {
+        partsToBasket.observe(this, new Observer<List<PartsToBasket>>() {
             @Override
             public void onChanged(List<PartsToBasket> partsToBaskets) {
             recyclerViewToBasket.setAdapter(adapter);
-            adapter.setPartsToBaskets((ArrayList<PartsToBasket>) partsToBasket);
+            for (PartsToBasket parts: partsToBaskets) {
+            }
+            adapter.setPartsToBaskets((ArrayList<PartsToBasket>) partsToBaskets);
             }
         });
+    }
+
+    public void Cleare(View view) {
+        viewModel.deleteAllPartsToBasket();
     }
 }
