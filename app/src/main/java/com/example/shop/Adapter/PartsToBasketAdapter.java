@@ -37,6 +37,8 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         holder.textViewPartNumber.setText(partsToBasket.getPartNumber());
         holder.textViewBrand.setText(partsToBasket.getBrand());
         holder.textViewName.setText(partsToBasket.getPartName());
+        holder.textViewPrice.setText(Integer.toString(partsToBasket.getPrice()));
+        holder.textViewSum.setText(Integer.toString(partsToBasket.getPrice()*partsToBasket.getQuantity()));
 //        holder.editTextQuantity.setText(partsToBasket.getQuantity());
 
     }

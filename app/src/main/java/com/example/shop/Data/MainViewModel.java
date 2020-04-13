@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainViewModel extends AndroidViewModel {
     private static PartsDataBase dataBase;
@@ -23,7 +24,6 @@ public class MainViewModel extends AndroidViewModel {
     }
 
 
-
     public LiveData<List<PartsToBasket>> getPartsToBasket() {
         return partsToBasket;
     }
@@ -32,11 +32,11 @@ public class MainViewModel extends AndroidViewModel {
         return parts;
     }
 
-    public void insertPartToBasket (PartsToBasket partsToBasket) {
+    public void insertPartToBasket(PartsToBasket partsToBasket) {
         new InsertTaskPartToBasket().execute(partsToBasket);
     }
 
-    public static class  InsertTaskPartToBasket extends AsyncTask <PartsToBasket, Void, Void> {
+    public static class InsertTaskPartToBasket extends AsyncTask<PartsToBasket, Void, Void> {
         @Override
         protected Void doInBackground(PartsToBasket... partsToBaskets) {
             if (partsToBaskets != null || partsToBaskets.length > 0) {
@@ -46,11 +46,11 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
-    public void deletePartToBasket (PartsToBasket partsToBasket) {
+    public void deletePartToBasket(PartsToBasket partsToBasket) {
         new DeleteTaskPartToBasket().execute(partsToBasket);
     }
 
-    public static class  DeleteTaskPartToBasket extends AsyncTask <PartsToBasket, Void, Void> {
+    public static class DeleteTaskPartToBasket extends AsyncTask<PartsToBasket, Void, Void> {
         @Override
         protected Void doInBackground(PartsToBasket... partsToBaskets) {
             if (partsToBaskets != null || partsToBaskets.length > 0) {
@@ -61,8 +61,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void insertPart(List<Part> partFromJSON) {
-            new InsertTask().execute((ArrayList<Part>) partFromJSON);
-           }
+        new InsertTask().execute((ArrayList<Part>) partFromJSON);
+    }
 
 
     public static class InsertTask extends AsyncTask<ArrayList<Part>, Void, Void> {
@@ -75,26 +75,55 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
-    public void deleteAllParts () {
+    public void deleteAllParts() {
         new DeleteAllParts().execute();
     }
 
-    public static class DeleteAllParts extends AsyncTask <Void, Void, Void> {
+    public static class DeleteAllParts extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             dataBase.partsDao().deleteAllParts();
             return null;
         }
     }
-    public void deleteAllPartsToBasket () {
+
+    public void deleteAllPartsToBasket() {
         new DeleteAllPartsToBasket().execute();
     }
 
-    public static class DeleteAllPartsToBasket extends AsyncTask <Void, Void, Void> {
+    public static class DeleteAllPartsToBasket extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             dataBase.partsDao().deleteAllPartToBasket();
             return null;
         }
     }
+
+    public PartsToBasket getPartsToBasketToID(int id) {
+
+        try {
+            return new GetPartsToBasketToID().execute(id).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static class GetPartsToBasketToID extends AsyncTask<Integer, Void, PartsToBasket> {
+        @Override
+        protected PartsToBasket doInBackground(Integer... integers) {
+            PartsToBasket part = null;
+            if (integers != null || integers.length > 0) {
+                try {
+                    part = (PartsToBasket) dataBase.partsDao().getPartToBasketFromID(integers[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return part;
+        }
+    }
+
 }

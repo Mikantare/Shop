@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DialogToBasket.DialogToBasketListener{
+public class MainActivity extends AppCompatActivity implements DialogToBasket.DialogToBasketListener {
 
     private RecyclerView recyclerViewResultSearch;
     private RecyclerView recyclerViewResultPartSearch;
@@ -43,20 +45,28 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private String partNumber;
     private MainViewModel viewModel;
     private Part partToBasket;
-    private int coincidence = 2;
+    private int coincidence = 1;
 
     @Override
     public void onFinishEditDialog(String quantity) {
-        checkOnCoincidence(partToBasket.getPartId());
-        switch (coincidence) {
-            case 1:
-                viewModel.insertPartToBasket(new PartsToBasket(partToBasket,Integer.parseInt(quantity)));
-                break;
-            case 0:
-                Toast.makeText(this, R.string.warning_item_to_basket, Toast.LENGTH_SHORT).show();
+//        checkOnCoincidence(partToBasket.getPartId());
+
+        PartsToBasket parts = null;
+        try {
+            parts = viewModel.getPartsToBasketToID(partToBasket.getPartId());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Intent intent = new Intent(this,BasketActivity.class);
-        startActivity(intent);
+        if (parts != null) {
+            Toast.makeText(this, R.string.warning_item_to_basket, Toast.LENGTH_SHORT).show();
+        } else {
+            viewModel.insertPartToBasket(new PartsToBasket(partToBasket, Integer.parseInt(quantity)));
+            Intent intent = new Intent(this, BasketActivity.class);
+            startActivity(intent);
+        }
+
+
+
 
 
     }
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         FragmentManager manager = getSupportFragmentManager();
                         DialogToBasket dialogToBasket = new DialogToBasket();
-                        dialogToBasket.show(manager,"myDialog");
+                        dialogToBasket.show(manager, "myDialog");
                         partToBasket = partAdapter.getParts().get(viewHolder.getAdapterPosition());
                     }
                 });
@@ -132,20 +142,34 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     }
 
 
-    public void checkOnCoincidence (final int id) {
-        final LiveData <List<PartsToBasket>> partsBasketFromDB = viewModel.getPartsToBasket();
-        partsBasketFromDB.observe(this, new Observer<List<PartsToBasket>>() {
-            @Override
-            public void onChanged(List<PartsToBasket> partsToBaskets) {
-                for (PartsToBasket parts: partsToBaskets) {
-                    if (id == parts.getPartId() || parts.getPartId() != 0){
-                        coincidence = 0;
-                    } else {
-                        coincidence = 1;
-                    }
-                }
-            }
-        });
-    }
+//    public void checkOnCoincidence(final int id) {
+//        PartsToBasket partsToBasket = viewModel.getPartsToBasketToID(id);
+//        if (partsToBasket == null) {
+//            coincidence = 0;
+//        } else {
+//            coincidence = 1;
+//        }
+//    }
+
+
+//    final LiveData<List<PartsToBasket>> partsBasketFromDB = viewModel.getPartsToBasket();
+//        partsBasketFromDB.observe(this,new Observer<List<PartsToBasket>>()
+//
+//    {
+//        @Override
+//        public void onChanged (List < PartsToBasket > partsToBaskets) {
+
+
+//                for (PartsToBasket parts: partsToBaskets) {
+//                    if (id == parts.getPartId()){
+//                    coincidence = 0;
+//                    } else {
+//                        Log.i("RezultSize","111" + partsToBaskets.size());
+//                        coincidence = 1;
+//                    }
+//                }
+////    }
+////    });
+//}
 
 }

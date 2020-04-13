@@ -30,7 +30,7 @@ public interface PartsDao {
     void deleteAllPartToBasket();
 
     @Query("SELECT * FROM part_to_basket WHERE partId ==:partId")
-    Part getPartToBasketFromID(String partId);
+    Part getPartToBasketFromID(int partId);
 
     @Insert
     void insertPartToBasket(PartsToBasket partsToBasket);
