@@ -39,7 +39,7 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         holder.textViewName.setText(partsToBasket.getPartName());
         holder.textViewPrice.setText(Integer.toString(partsToBasket.getPrice()));
         holder.textViewSum.setText(Integer.toString(partsToBasket.getPrice()*partsToBasket.getQuantity()));
-//        holder.editTextQuantity.setText(partsToBasket.getQuantity());
+        holder.textViewQuantity.setText(Integer.toString(partsToBasket.getQuantity()));
 
     }
 
@@ -54,6 +54,7 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
     private TextView textViewPartNumber;
     private TextView textViewPrice;
     private TextView textViewSum;
+    private TextView textViewQuantity;
     private EditText editTextComment;
     private EditText editTextQuantity;
 
@@ -66,6 +67,7 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         textViewSum = itemView.findViewById(R.id.textViewSum);
         editTextComment = itemView.findViewById(R.id.editTextComment);
         editTextQuantity = itemView.findViewById(R.id.editTextQuantity);
+        textViewQuantity = itemView.findViewById(R.id.textViewQuantity);
     }
 }
 }

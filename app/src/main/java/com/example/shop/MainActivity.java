@@ -45,12 +45,9 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private String partNumber;
     private MainViewModel viewModel;
     private Part partToBasket;
-    private int coincidence = 1;
 
     @Override
     public void onFinishEditDialog(String quantity) {
-//        checkOnCoincidence(partToBasket.getPartId());
-
         PartsToBasket parts = null;
         try {
             parts = viewModel.getPartsToBasketToID(partToBasket.getPartId());
@@ -64,11 +61,6 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
             Intent intent = new Intent(this, BasketActivity.class);
             startActivity(intent);
         }
-
-
-
-
-
     }
 
     @Override
@@ -140,36 +132,4 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
         ArrayList<BrandPart> brandParts = JSONUtils.getBrandFromJSON(jsonObject);
         brandPartAdapter.setBrandParts(brandParts);
     }
-
-
-//    public void checkOnCoincidence(final int id) {
-//        PartsToBasket partsToBasket = viewModel.getPartsToBasketToID(id);
-//        if (partsToBasket == null) {
-//            coincidence = 0;
-//        } else {
-//            coincidence = 1;
-//        }
-//    }
-
-
-//    final LiveData<List<PartsToBasket>> partsBasketFromDB = viewModel.getPartsToBasket();
-//        partsBasketFromDB.observe(this,new Observer<List<PartsToBasket>>()
-//
-//    {
-//        @Override
-//        public void onChanged (List < PartsToBasket > partsToBaskets) {
-
-
-//                for (PartsToBasket parts: partsToBaskets) {
-//                    if (id == parts.getPartId()){
-//                    coincidence = 0;
-//                    } else {
-//                        Log.i("RezultSize","111" + partsToBaskets.size());
-//                        coincidence = 1;
-//                    }
-//                }
-////    }
-////    });
-//}
-
 }

@@ -40,7 +40,11 @@ public class MainViewModel extends AndroidViewModel {
         @Override
         protected Void doInBackground(PartsToBasket... partsToBaskets) {
             if (partsToBaskets != null || partsToBaskets.length > 0) {
-                dataBase.partsDao().insertPartToBasket(partsToBaskets[0]);
+                try {
+                    dataBase.partsDao().insertPartToBasket(partsToBaskets[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return null;
         }

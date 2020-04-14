@@ -10,5 +10,6 @@
     <string name="title_quantity">Укажите колличество</string>
     <string name="button_create_order">Оформить заказ</string>
     <string name="warning_item_to_basket">Данный товар уже в корзине</string>
+    <string name="hint_comment">комментарий</string>
 
 </resources>

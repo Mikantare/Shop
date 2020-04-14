@@ -38,10 +38,10 @@ public class BasketActivity extends AppCompatActivity {
         partsToBasket.observe(this, new Observer<List<PartsToBasket>>() {
             @Override
             public void onChanged(List<PartsToBasket> partsToBaskets) {
-            recyclerViewToBasket.setAdapter(adapter);
-            for (PartsToBasket parts: partsToBaskets) {
-            }
-            adapter.setPartsToBaskets((ArrayList<PartsToBasket>) partsToBaskets);
+                recyclerViewToBasket.setAdapter(adapter);
+                for (PartsToBasket parts : partsToBaskets) {
+                }
+                adapter.setPartsToBaskets((ArrayList<PartsToBasket>) partsToBaskets);
             }
         });
     }
