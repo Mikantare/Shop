@@ -43,8 +43,10 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private MainViewModel viewModel;
     private Part partToBasket;
 
+
+
     @Override
-    public void onFinishEditDialog(String quantity) {
+    public void onFinishEditDialog(String quantity, int buttonID) {
         PartsToBasket parts = null;
         try {
             parts = viewModel.getPartsToBasketToID(partToBasket.getPartId());
@@ -55,8 +57,10 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
             Toast.makeText(this, R.string.warning_item_to_basket, Toast.LENGTH_SHORT).show();
         } else {
             viewModel.insertPartToBasket(new PartsToBasket(partToBasket, Integer.parseInt(quantity)));
-            Intent intent = new Intent(this, BasketActivity.class);
-            startActivity(intent);
+            if (buttonID == 0) {
+                Intent intent = new Intent(this, BasketActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

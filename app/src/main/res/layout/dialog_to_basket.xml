@@ -25,12 +25,12 @@
         android:id="@+id/buttonToBasket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/grenn"
         android:layout_margin="8dp"
+        android:background="@color/grenn"
         android:text="@string/button_add_to_basket"
-        app:layout_constraintEnd_toStartOf="@id/buttonCancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttoToContinue"
         app:layout_constraintTop_toBottomOf="@+id/editTextQuantityToBasket" />
 
     <Button
@@ -42,6 +42,18 @@
         android:text="@string/button_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttoToContinue"
+        app:layout_constraintTop_toBottomOf="@+id/editTextQuantityToBasket" />
+
+    <Button
+        android:id="@+id/buttoToContinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/orange"
+        android:text="@string/button_continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonCancel"
         app:layout_constraintStart_toEndOf="@+id/buttonToBasket"
         app:layout_constraintTop_toBottomOf="@+id/editTextQuantityToBasket" />
 

@@ -27,8 +27,8 @@ import java.util.zip.Inflater;
 public class DialogToBasket extends DialogFragment implements TextView.OnEditorActionListener {
 
     private EditText editTextQuantityToBasket;
-    private Button buttonToBasket, buttonCancel;
-
+    private Button buttonToBasket, buttonCancel, buttoToContinue;
+    private int buttonID;
     public DialogToBasket() {
     }
 
@@ -36,7 +36,7 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (EditorInfo.IME_ACTION_DONE == actionId){
             DialogToBasketListener listener = (DialogToBasketListener) getActivity();
-            listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString());
+            listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
             this.dismiss();
             return true;
         }
@@ -44,8 +44,9 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
     }
 
     public interface DialogToBasketListener {
-        void onFinishEditDialog (String quantity);
+        void onFinishEditDialog (String quantity, int buttonID);
     }
+
 
     @Nullable
     @Override
@@ -54,19 +55,30 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
         editTextQuantityToBasket = (EditText) view.findViewById(R.id.editTextQuantityToBasket);
         buttonToBasket = (Button) view.findViewById(R.id.buttonToBasket);
         buttonCancel = (Button) view.findViewById(R.id.buttonCancel);
+        buttoToContinue = (Button) view.findViewById(R.id.buttoToContinue);
         getDialog().setTitle(R.string.title_quantity);
 
         buttonToBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonID = 0;
                 DialogToBasketListener listener = (DialogToBasketListener) getActivity();
-                listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString());
+                listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
                 dismiss();
             }
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
+            }
+        });
+        buttoToContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int buttonID = 1;
+                DialogToBasketListener listener = (DialogToBasketListener) getActivity();
+                listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
                 dismiss();
             }
         });

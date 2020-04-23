@@ -6,11 +6,12 @@
     <string name="title_add_to_basket">Добавления товара в корзину</string>
     <string name="quantity_to_basket">кол-во</string>
     <string name="comment">Комментарий</string>
-    <string name="button_add_to_basket">Переход в корзину</string>
+    <string name="button_add_to_basket">В корзину</string>
     <string name="title_quantity">Укажите колличество</string>
     <string name="button_create_order">Оформить заказ</string>
     <string name="button_clear_basket">Очистить корзину</string>
     <string name="warning_item_to_basket">Данный товар уже в корзине</string>
     <string name="hint_comment">комментарий</string>
+    <string name="button_continue">Продолжить</string>
 
 </resources>
