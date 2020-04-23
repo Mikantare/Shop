@@ -17,6 +17,7 @@ import com.example.shop.Adapter.PartsToBasketAdapter;
 import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
 import com.example.shop.Data.PartsToBasket;
+import com.example.shop.Utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +49,23 @@ public class BasketActivity extends AppCompatActivity {
 
     public void Cleare(View view) {
         viewModel.deleteAllPartsToBasket();
+    }
+
+    public void CreateOrder(View view) {
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        final LiveData<List<PartsToBasket>> partsToBasket = viewModel.getPartsToBasket();
+        partsToBasket.observe(this, new Observer<List<PartsToBasket>>() {
+            @Override
+            public void onChanged(List<PartsToBasket> partsToBaskets) {
+                for (PartsToBasket parts : partsToBaskets) {
+                    NetworkUtils.partToBasket(parts.getPartId(),parts.getQuantity());
+                }
+                viewModel.deleteAllPartsToBasket();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
     }
 }

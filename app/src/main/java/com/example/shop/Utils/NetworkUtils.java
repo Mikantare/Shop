@@ -22,8 +22,9 @@ public class NetworkUtils {
 
     private static final String BASE_BRABD_URL_SEARCH_BRAND = "http://portal.moskvorechie.ru/portal.api?l=%s&p=%s&act=brand_by_nr&nr=%s&oe&name&cs=utf8";
     private static final String BASE_PART_URL_SEARCH_BRAND = "http://portal.moskvorechie.ru/portal.api?l=%s&p=%s&act=price_by_nr_firm&v=1&nr=%s&f=%s&cs=utf8%s%s";
+    private static final String BASE_PART_URL_TO_BASKET = "http://portal.moskvorechie.ru/portal.api?l=%s&p=%s&act=to_basket&gid=%d&q=%d";
     private static final String USER_NAME = "plotnikov";
-    private static final String API_KEY = "U66xkswgBstTKNAWvmPFQNqqpJy2kPn1mwiiEBORqMVM8lSyg9CfphEOPpvs6pkE";
+    private static final String API_KEY = "MJ30YYcI5sQRnib8gNCHLz1uzP0iEGVkxNwWCFZOQtXA3x3CTzAh9j47Q8b5uTC9";
 
     //    При использовании данного параметра, в результатах данной процедуру будут также выводиться бренды на которые есть аналоги на нашем складе. "" для отключения
     private static final String API_ANALOG_ON = "&alt";
@@ -68,6 +69,29 @@ public class NetworkUtils {
         return result;
     }
 
+    public static void partToBasket (int id, int quantity) {
+        JSONObject result = null;
+        URL url = buildURLTOBasket(id, quantity);
+        try {
+            result = new JSONLoadTask().execute(url).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static URL buildURLTOBasket (int id, int quantity) {
+        URL URLToBasket = null;
+        Uri uri = Uri.parse(String.format(BASE_PART_URL_TO_BASKET,USER_NAME, API_KEY,id,quantity));
+        try {
+            URLToBasket = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return URLToBasket;
+    }
 
     public static JSONObject getBrandJSONFromNetwork(String partNumber) {
         JSONObject result = null;

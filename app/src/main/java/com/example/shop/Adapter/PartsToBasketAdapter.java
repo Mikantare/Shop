@@ -1,5 +1,7 @@
 package com.example.shop.Adapter;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,4 +72,7 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         textViewQuantity = itemView.findViewById(R.id.textViewQuantity);
     }
 }
+
+
+
 }

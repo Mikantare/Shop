@@ -32,7 +32,6 @@
         app:srcCompat="@drawable/logo" />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewToBasket"
         android:layout_width="0dp"
@@ -41,19 +40,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/buttonOrder"
+        android:id="@+id/buttonClearBasket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="Cleare"
-        android:text="@string/button_create_order"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        android:text="@string/button_clear_basket"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonCreateOrder"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonCreateOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="CreateOrder"
+        android:text="@string/button_create_order"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/buttonClearBasket" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
