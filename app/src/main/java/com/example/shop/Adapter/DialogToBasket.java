@@ -29,12 +29,13 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
     private EditText editTextQuantityToBasket;
     private Button buttonToBasket, buttonCancel, buttoToContinue;
     private int buttonID;
+
     public DialogToBasket() {
     }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (EditorInfo.IME_ACTION_DONE == actionId){
+        if (EditorInfo.IME_ACTION_DONE == actionId) {
             DialogToBasketListener listener = (DialogToBasketListener) getActivity();
             listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
             this.dismiss();
@@ -44,7 +45,7 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
     }
 
     public interface DialogToBasketListener {
-        void onFinishEditDialog (String quantity, int buttonID);
+        void onFinishEditDialog(String quantity, int buttonID);
     }
 
 
@@ -62,9 +63,13 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
             @Override
             public void onClick(View v) {
                 buttonID = 0;
-                DialogToBasketListener listener = (DialogToBasketListener) getActivity();
-                listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
-                dismiss();
+                if (!editTextQuantityToBasket.getText().toString().trim().isEmpty()) {
+                    DialogToBasketListener listener = (DialogToBasketListener) getActivity();
+                    listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Заполните колличество", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -77,9 +82,13 @@ public class DialogToBasket extends DialogFragment implements TextView.OnEditorA
             @Override
             public void onClick(View v) {
                 int buttonID = 1;
-                DialogToBasketListener listener = (DialogToBasketListener) getActivity();
-                listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
-                dismiss();
+                if (!editTextQuantityToBasket.getText().toString().trim().isEmpty()) {
+                    DialogToBasketListener listener = (DialogToBasketListener) getActivity();
+                    listener.onFinishEditDialog(editTextQuantityToBasket.getText().toString(), buttonID);
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Заполните колличество", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

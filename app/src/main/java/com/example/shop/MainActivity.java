@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +46,28 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     private MainViewModel viewModel;
     private Part partToBasket;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.itemMain:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.itemBasket:
+                Intent intentToFavourite = new Intent(this, BasketActivity.class);
+                startActivity(intentToFavourite);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onFinishEditDialog(String quantity, int buttonID) {
