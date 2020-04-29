@@ -19,6 +19,11 @@ import java.util.ArrayList;
 
 public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdapter.PartBasketViewHolder> {
     ArrayList<PartsToBasket> partsToBaskets;
+    private String[] mDataset;
+
+//    public PartsToBasketAdapter(String[] mDataset) {
+//        this.mDataset = mDataset;
+//    }
 
     public void setPartsToBaskets(ArrayList<PartsToBasket> partsToBaskets) {
         this.partsToBaskets = partsToBaskets;
@@ -30,7 +35,7 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
     @Override
     public PartBasketViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.part_item_basket,parent,false);
-        return new PartBasketViewHolder(view);
+        return new PartBasketViewHolder(view, new MyCustomEditTextListener());
     }
 
     @Override
@@ -40,8 +45,16 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         holder.textViewBrand.setText(partsToBasket.getBrand());
         holder.textViewName.setText(partsToBasket.getPartName());
         holder.textViewPrice.setText(Integer.toString(partsToBasket.getPrice()));
-        holder.textViewSum.setText(Integer.toString(partsToBasket.getPrice()*partsToBasket.getQuantity()));
+//        holder.textViewSum.setText(Integer.toString(partsToBasket.getPrice()*partsToBasket.getQuantity()));
         holder.textViewQuantity.setText(Integer.toString(partsToBasket.getQuantity()));
+        holder.myCustomEditTextListener.updatePosition(holder.getAdapterPosition());
+        try {
+            holder.textViewSum.setText(mDataset[holder.getAdapterPosition()]);
+//            holder.editTextQuantity.setText(mDataset[holder.getAdapterPosition()]);
+            holder.editTextQuantity.setText(Integer.toString(partsToBasket.getQuantity()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -50,7 +63,9 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         return partsToBaskets.size();
     }
 
+
     class PartBasketViewHolder extends RecyclerView.ViewHolder {
+    public MyCustomEditTextListener myCustomEditTextListener;
     private TextView textViewName;
     private TextView textViewBrand;
     private TextView textViewPartNumber;
@@ -60,7 +75,7 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
     private EditText editTextComment;
     private EditText editTextQuantity;
 
-    public PartBasketViewHolder(@NonNull View itemView) {
+    public PartBasketViewHolder(@NonNull View itemView, MyCustomEditTextListener myCustomEditTextListener) {
         super(itemView);
         textViewName = itemView.findViewById(R.id.textViewName);
         textViewBrand = itemView.findViewById(R.id.textViewBrand);
@@ -70,8 +85,32 @@ public class PartsToBasketAdapter extends RecyclerView.Adapter<PartsToBasketAdap
         editTextComment = itemView.findViewById(R.id.editTextComment);
         editTextQuantity = itemView.findViewById(R.id.editTextQuantity);
         textViewQuantity = itemView.findViewById(R.id.textViewQuantity);
+        this.myCustomEditTextListener = myCustomEditTextListener;
     }
 }
+
+    private class MyCustomEditTextListener implements TextWatcher {
+        private int position;
+
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            // no op
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            mDataset[position] = charSequence.toString();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            // no op
+        }
+    }
 
 
 

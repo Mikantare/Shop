@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -138,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     }
 
     public void downLoadPartsList(String partNumber, String brand) {
+
         recyclerViewResultPartSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
         if (jsonObject != null) {
@@ -148,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
 
 
     public void search(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(buttonSearch.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
         recyclerViewResultSearch.setVisibility(View.VISIBLE);
         recyclerViewResultPartSearch.setVisibility(View.INVISIBLE);
         recyclerViewResultSearch.setLayoutManager(new LinearLayoutManager(this));
