@@ -10,13 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shop.Data.BrandPart;
+import com.example.shop.Pojo.BrandPojo;
+import com.example.shop.Pojo.BrandsPojo;
 import com.example.shop.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.BrandPartsViewHolder> {
-    private ArrayList<BrandPart> brandParts;
+public class BrandPartAdapter extends RecyclerView.Adapter <BrandPartAdapter.BrandPartsViewHolder> {
+    private ArrayList <BrandPart> brandParts;
     private OnPartClickListener onPartClickListener;
+    private List<BrandPojo> brandPojos;
+
+    public BrandPartAdapter() {
+    }
 
     public void setOnPartClickListener(OnPartClickListener onPartClickListener) {
         this.onPartClickListener = onPartClickListener;
@@ -26,14 +33,27 @@ public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.Bran
         void OnpartClick(int position);
     }
 
-    public ArrayList<BrandPart> getBrandParts() {
+    public ArrayList <BrandPart> getBrandParts() {
         return brandParts;
     }
 
-    public void setBrandParts(ArrayList<BrandPart> brandParts) {
+    public void setBrandParts(ArrayList <BrandPart> brandParts) {
         this.brandParts = brandParts;
         notifyDataSetChanged();
     }
+
+    // Для Pojo
+
+    public BrandPartAdapter(List <BrandPojo> brandPojos) {
+        this.brandPojos = brandPojos;
+    }
+
+    public void setBrandPojos(List <BrandPojo> brandPojos) {
+        this.brandPojos = brandPojos;
+        notifyDataSetChanged();
+    }
+
+    // Для Pojo
 
     @NonNull
     @Override
@@ -41,18 +61,27 @@ public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.Bran
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_part_item, parent, false);
         return new BrandPartsViewHolder(view);
     }
+    //Для Pojo
 
     @Override
     public void onBindViewHolder(@NonNull BrandPartsViewHolder holder, int position) {
-        BrandPart brandPart = brandParts.get(position);
-        holder.textViewPartNumber.setText(brandPart.getPartNumber());
+
+////       BrandPart brandPart = brandParts.get(position);
+//        holder.textViewPartNumber.setText(brandPart.getPartNumber());
+//        holder.textViewBrand.setText(brandPart.getBrand());
+//        holder.textViewName.setText(brandPart.getPartName());
+
+        //Для Pojo
+        BrandPojo brandPart = brandPojos.get(position);
+
+        holder.textViewPartNumber.setText(brandPart.getNr());
         holder.textViewBrand.setText(brandPart.getBrand());
-        holder.textViewName.setText(brandPart.getPartName());
+        holder.textViewName.setText(brandPart.getName());
     }
 
     @Override
     public int getItemCount() {
-        return brandParts.size();
+        return brandPojos.size();
     }
 
     class BrandPartsViewHolder extends RecyclerView.ViewHolder {
@@ -68,9 +97,9 @@ public class BrandPartAdapter extends RecyclerView.Adapter<BrandPartAdapter.Bran
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                if (onPartClickListener != null) {
-                onPartClickListener.OnpartClick(getAdapterPosition());
-                }
+                    if (onPartClickListener != null) {
+                        onPartClickListener.OnpartClick(getAdapterPosition());
+                    }
                 }
             });
         }

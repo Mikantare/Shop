@@ -24,10 +24,14 @@ import android.widget.Toast;
 import com.example.shop.Adapter.BrandPartAdapter;
 import com.example.shop.Adapter.DialogToBasket;
 import com.example.shop.Adapter.PartAdapter;
+import com.example.shop.Api.ApiFactory;
+import com.example.shop.Api.ApiService;
 import com.example.shop.Data.BrandPart;
 import com.example.shop.Data.MainViewModel;
 import com.example.shop.Data.Part;
 import com.example.shop.Data.PartsToBasket;
+import com.example.shop.Pojo.BrandPojo;
+import com.example.shop.Pojo.BrandsPojo;
 import com.example.shop.Utils.JSONUtils;
 import com.example.shop.Utils.NetworkUtils;
 
@@ -35,6 +39,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements DialogToBasket.DialogToBasketListener {
 
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -109,12 +117,12 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
                 String brand = brandPart.getBrand();
                 String partNumber = brandPart.getPartNumber();
                 downLoadPartsList(partNumber, brand);
-                final LiveData<List<Part>> partFromDb = viewModel.getParts();
-                partFromDb.observe(MainActivity.this, new Observer<List<Part>>() {
+                final LiveData <List <Part>> partFromDb = viewModel.getParts();
+                partFromDb.observe(MainActivity.this, new Observer <List <Part>>() {
                     @Override
-                    public void onChanged(List<Part> parts) {
+                    public void onChanged(List <Part> parts) {
                         recyclerViewResultPartSearch.setAdapter(partAdapter);
-                        partAdapter.setParts((ArrayList<Part>) parts);
+                        partAdapter.setParts((ArrayList <Part>) parts);
                     }
                 });
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
@@ -144,22 +152,47 @@ public class MainActivity extends AppCompatActivity implements DialogToBasket.Di
         JSONObject jsonObject = NetworkUtils.getPartJSONFromNetwork(partNumber, brand);
         if (jsonObject != null) {
             viewModel.deleteAllParts();
-            viewModel.insertPart((List<Part>) JSONUtils.getPartFromJSON(jsonObject));
+            viewModel.insertPart((List <Part>) JSONUtils.getPartFromJSON(jsonObject));
         }
     }
 
 
     public void search(View view) {
-        InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(buttonSearch.getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
-        recyclerViewResultSearch.setVisibility(View.VISIBLE);
-        recyclerViewResultPartSearch.setVisibility(View.INVISIBLE);
-        recyclerViewResultSearch.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewResultSearch.setAdapter(brandPartAdapter);
-        partNumber = editTextPartNumber.getText().toString().trim();
-        JSONObject jsonObject = NetworkUtils.getBrandJSONFromNetwork(partNumber);
-        ArrayList<BrandPart> brandParts = JSONUtils.getBrandFromJSON(jsonObject);
-        brandPartAdapter.setBrandParts(brandParts);
+
+        searchToRetrofit();
+//        InputMethodManager imm = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(buttonSearch.getWindowToken(),
+//                InputMethodManager.HIDE_NOT_ALWAYS);
+//        recyclerViewResultSearch.setVisibility(View.VISIBLE);
+//        recyclerViewResultPartSearch.setVisibility(View.INVISIBLE);
+//        recyclerViewResultSearch.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerViewResultSearch.setAdapter(brandPartAdapter);
+//        partNumber = editTextPartNumber.getText().toString().trim();
+//        JSONObject jsonObject = NetworkUtils.getBrandJSONFromNetwork(partNumber);
+//        ArrayList<BrandPart> brandParts = JSONUtils.getBrandFromJSON(jsonObject);
+//        brandPartAdapter.setBrandParts(brandParts);
+    }
+
+    public void searchToRetrofit() {
+        ApiFactory apiFactory = ApiFactory.getInstance();
+        final ApiService apiService = apiFactory.getApiservice();
+        apiService.getPojoParts()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer <BrandsPojo>() {
+                    @Override
+                    public void accept(BrandsPojo brandsPojo) throws Exception {
+                        recyclerViewResultSearch.setVisibility(View.VISIBLE);
+                        recyclerViewResultPartSearch.setVisibility(View.INVISIBLE);
+                        recyclerViewResultSearch.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        recyclerViewResultSearch.setAdapter(brandPartAdapter);
+                        brandPartAdapter.setBrandPojos(brandsPojo.getParts());
+                    }
+                }, new Consumer <Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
